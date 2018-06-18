@@ -296,14 +296,12 @@ int32_t cam_csiphy_config_dev(struct csiphy_device *csiphy_dev)
 			continue;
 		}
 
-		settle_cnt = div64_u64(csiphy_dev->csiphy_info.settle_time,
-			200000000);
+		settle_cnt = (csiphy_dev->csiphy_info.settle_time / 200000000);
 		if (csiphy_dev->csiphy_info.combo_mode == 1 &&
 			(lane_pos >= 3))
 			settle_cnt =
-				div64_u64(csiphy_dev->csiphy_info.
-					settle_time_combo_sensor,
-					200000000);
+			(csiphy_dev->csiphy_info.settle_time_combo_sensor /
+				200000000);
 		for (i = 0; i < cfg_size; i++) {
 			switch (reg_array[lane_pos][i].csiphy_param_type) {
 			case CSIPHY_LANE_ENABLE:
@@ -330,10 +328,8 @@ int32_t cam_csiphy_config_dev(struct csiphy_device *csiphy_dev)
 				CAM_DBG(CAM_CSIPHY, "Do Nothing");
 			break;
 			}
-			if (reg_array[lane_pos][i].delay > 0) {
-				usleep_range(reg_array[lane_pos][i].delay*1000,
-					reg_array[lane_pos][i].delay*1000 + 10);
-			}
+			usleep_range(reg_array[lane_pos][i].delay*1000,
+				reg_array[lane_pos][i].delay*1000 + 1000);
 		}
 		lane_mask >>= 1;
 		lane_pos++;
