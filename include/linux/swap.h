@@ -433,7 +433,11 @@ extern struct uid_node *find_uid_node(uid_t uid, struct lruvec *lruvec);
 extern struct uid_node *insert_uid_node(struct uid_node **hash_table,
 							uid_t uid);
 extern struct uid_node **alloc_uid_hash_table(void);
+
+#ifdef CONFIG_ANDROID_LOW_MEMORY_KILLER
 extern unsigned long killed_num;
+#endif
+
 extern unsigned long inactive_nr;
 extern unsigned long active_nr;
 extern unsigned long vmpress[];
