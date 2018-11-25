@@ -16,7 +16,7 @@
 #include <linux/mutex.h>
 #include <linux/spinlock.h>
 #include <linux/kref.h>
-#include "cam_req_mgr_interface.h"
+#include "../cam_req_mgr/cam_req_mgr_interface.h"
 #include "cam_hw_mgr_intf.h"
 
 /* Forward declarations */
@@ -70,7 +70,7 @@ struct cam_ctx_request {
 	uint32_t                      num_in_map_entries;
 	struct cam_hw_fence_map_entry out_map_entries[CAM_CTX_CFG_MAX];
 	uint32_t                      num_out_map_entries;
-	atomic_t                      num_in_acked;
+	uint32_t                      num_in_acked;
 	uint32_t                      num_out_acked;
 	int                           flushed;
 	struct cam_context           *ctx;

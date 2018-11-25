@@ -2768,7 +2768,6 @@ static void sde_encoder_virt_disable(struct drm_encoder *drm_enc)
 	struct sde_encoder_virt *sde_enc = NULL;
 	struct msm_drm_private *priv;
 	struct sde_kms *sde_kms;
-	struct drm_connector *drm_conn = NULL;
 	enum sde_intf_mode intf_mode;
 	int i = 0;
 
@@ -2796,10 +2795,6 @@ static void sde_encoder_virt_disable(struct drm_encoder *drm_enc)
 	intf_mode = sde_encoder_get_intf_mode(drm_enc);
 
 	SDE_EVT32(DRMID(drm_enc));
-
-	/* Disable ESD thread */
-	drm_conn = sde_enc->cur_master->connector;
-	sde_connector_schedule_status_work(drm_conn, false);
 
 	/* wait for idle */
 	sde_encoder_wait_for_event(drm_enc, MSM_ENC_TX_COMPLETE);
@@ -4876,34 +4871,6 @@ int sde_encoder_update_caps_for_cont_splash(struct drm_encoder *encoder)
 
 int sde_encoder_display_failure_notification(struct drm_encoder *enc)
 {
-	struct msm_drm_thread *event_thread = NULL;
-	struct msm_drm_private *priv = NULL;
-	struct sde_encoder_virt *sde_enc = NULL;
-
-	if (!enc || !enc->dev || !enc->dev->dev_private) {
-		SDE_ERROR("invalid parameters\n");
-		return -EINVAL;
-	}
-
-	priv = enc->dev->dev_private;
-	sde_enc = to_sde_encoder_virt(enc);
-	if (!sde_enc->crtc || (sde_enc->crtc->index
-			>= ARRAY_SIZE(priv->event_thread))) {
-		SDE_DEBUG_ENC(sde_enc,
-			"invalid cached CRTC: %d or crtc index: %d\n",
-			sde_enc->crtc == NULL,
-			sde_enc->crtc ? sde_enc->crtc->index : -EINVAL);
-		return -EINVAL;
-	}
-
-	SDE_EVT32_VERBOSE(DRMID(enc));
-
-	event_thread = &priv->event_thread[sde_enc->crtc->index];
-
-	kthread_queue_work(&event_thread->worker,
-			   &sde_enc->esd_trigger_work);
-	kthread_flush_work(&sde_enc->esd_trigger_work);
-
 	/**
 	 * panel may stop generating te signal (vsync) during esd failure. rsc
 	 * hardware may hang without vsync. Avoid rsc hang by generating the

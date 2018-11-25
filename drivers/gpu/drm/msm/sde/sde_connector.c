@@ -1439,28 +1439,6 @@ int sde_connector_helper_reset_custom_properties(
 	return 0;
 }
 
-int sde_connector_get_panel_vfp(struct drm_connector *connector,
-	struct drm_display_mode *mode)
-{
-	struct sde_connector *c_conn;
-	int vfp = -EINVAL;
-
-	if (!connector || !mode) {
-		SDE_ERROR("invalid connector\n");
-		return vfp;
-	}
-	c_conn = to_sde_connector(connector);
-	if (!c_conn->ops.get_panel_vfp)
-		return vfp;
-
-	vfp = c_conn->ops.get_panel_vfp(c_conn->display,
-		mode->hdisplay, mode->vdisplay);
-	if (vfp <= 0)
-		SDE_ERROR("Failed get_panel_vfp %d\n", vfp);
-
-	return vfp;
-}
-
 static int _sde_debugfs_conn_cmd_tx_open(struct inode *inode, struct file *file)
 {
 	/* non-seekable */
@@ -1753,63 +1731,6 @@ sde_connector_best_encoder(struct drm_connector *connector)
 	 * supported.
 	 */
 	return c_conn->encoder;
-}
-
-static void _sde_connector_report_panel_dead(struct sde_connector *conn)
-{
-	struct drm_event event;
-
-	if (!conn)
-		return;
-
-	/* Panel dead notification can come:
-	 * 1) ESD thread
-	 * 2) Commit thread (if TE stops coming)
-	 * So such case, avoid failure notification twice.
-	 */
-	if (conn->panel_dead)
-		return;
-
-	conn->panel_dead = true;
-	event.type = DRM_EVENT_PANEL_DEAD;
-	event.length = sizeof(bool);
-	msm_mode_object_event_notify(&conn->base.base,
-		conn->base.dev, &event, (u8 *)&conn->panel_dead);
-	sde_encoder_display_failure_notification(conn->encoder);
-	SDE_EVT32(SDE_EVTLOG_ERROR);
-	SDE_ERROR("esd check failed report PANEL_DEAD conn_id: %d enc_id: %d\n",
-			conn->base.base.id, conn->encoder->base.id);
-}
-
-int sde_connector_esd_status(struct drm_connector *conn)
-{
-	struct sde_connector *sde_conn = NULL;
-	int ret = 0;
-
-	if (!conn)
-		return ret;
-
-	sde_conn = to_sde_connector(conn);
-	if (!sde_conn || !sde_conn->ops.check_status)
-		return ret;
-
-	/* protect this call with ESD status check call */
-	mutex_lock(&sde_conn->lock);
-	ret = sde_conn->ops.check_status(sde_conn->display, true);
-	mutex_unlock(&sde_conn->lock);
-
-	if (ret <= 0) {
-		/* cancel if any pending esd work */
-		sde_connector_schedule_status_work(conn, false);
-		_sde_connector_report_panel_dead(sde_conn);
-		ret = -ETIMEDOUT;
-	} else {
-		SDE_DEBUG("Successfully received TE from panel\n");
-		ret = 0;
-	}
-	SDE_EVT32(ret);
-
-	return ret;
 }
 
 static void sde_connector_check_status_work(struct work_struct *work)

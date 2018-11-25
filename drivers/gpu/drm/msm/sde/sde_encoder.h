@@ -33,7 +33,6 @@
 #define IDLE_POWERCOLLAPSE_DURATION	(66 - 16/2)
 #define IDLE_POWERCOLLAPSE_IN_EARLY_WAKEUP (200 - 16/2)
 
-
 /**
  * Encoder functions and data types
  * @intfs:	Interfaces this encoder is using, INTF_MODE_NONE if unused
@@ -243,7 +242,6 @@ int sde_encoder_update_caps_for_cont_splash(struct drm_encoder *encoder);
  * sde_encoder_display_failure_notification - update sde encoder state for
  * esd timeout or other display failure notification. This event flows from
  * dsi, sde_connector to sde_encoder.
- *
  *
  *
  *      TODO: manage the event at sde_kms level for forward processing.

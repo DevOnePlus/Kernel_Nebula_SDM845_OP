@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2016-2018, The Linux Foundation. All rights reserved.
+ * Copyright (c) 2016-2017, The Linux Foundation. All rights reserved.
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License version 2 and
@@ -185,12 +185,8 @@ static void dsi_bridge_pre_enable(struct drm_bridge *bridge)
 		return;
 	}
 
-	if (!c_bridge || !c_bridge->display || !c_bridge->display->panel) {
+	if (!c_bridge || !c_bridge->display)
 		pr_err("Incorrect bridge details\n");
-		return;
-	}
-
-	atomic_set(&c_bridge->display->panel->esd_recovery_pending, 0);
 
 	if (c_bridge->display->is_prim_display && atomic_read(&prim_panel_is_on)) {
 		cancel_delayed_work_sync(&prim_panel_work);
