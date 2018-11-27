@@ -777,7 +777,7 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		if (i >= 27) { // the overclocked freq 2956800
 			src = 1;
 			div = 0;
-			lval = 170;
+			lval = 173;
 			core_count = 1;
 		}
 
@@ -1050,11 +1050,11 @@ static int clk_osm_read_lut(struct platform_device *pdev, struct clk_osm *c)
 	u32 data, src, lval, i, j = OSM_TABLE_SIZE;
 	struct clk_vdd_class *vdd = osm_clks_init[c->cluster_num].vdd_class;
 	struct osm_entry perf_ex = {
-		.lval = 170,
+		.lval = 173,
 		.ccount = 1,
 		.frequency = 3187800000,
 		.virtual_corner = 28,
-		.open_loop_volt = 1108,
+		.open_loop_volt = 1111,
 	};
 
 	for (i = 0; i < OSM_TABLE_SIZE; i++) {
