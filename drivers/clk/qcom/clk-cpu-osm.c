@@ -1052,7 +1052,7 @@ static int clk_osm_read_lut(struct platform_device *pdev, struct clk_osm *c)
 	struct osm_entry perf_ex = {
 		.lval = 166,
 		.ccount = 1,
-		.frequency = 3156800000,
+		.frequency = 3187800000,
 		.virtual_corner = 28,
 		.open_loop_volt = 1106,
 	};
