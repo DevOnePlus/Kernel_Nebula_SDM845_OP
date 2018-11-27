@@ -774,10 +774,10 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		lval = data & GENMASK(7, 0);
 		core_count = CORE_COUNT_VAL(data);
 
-		if (i >= 27) { // the overclocked freq 3321200
+		if (i >= 27) { // the overclocked freq 3417000
 			src = 1;
 			div = 0;
-			lval = 173;
+			lval = 178;
 			core_count = 1;
 		}
 
@@ -1050,11 +1050,11 @@ static int clk_osm_read_lut(struct platform_device *pdev, struct clk_osm *c)
 	u32 data, src, lval, i, j = OSM_TABLE_SIZE;
 	struct clk_vdd_class *vdd = osm_clks_init[c->cluster_num].vdd_class;
 	struct osm_entry perf_ex = {
-		.lval = 173,
+		.lval = 178,
 		.ccount = 1,
-		.frequency = 3321200000,
+		.frequency = 3417000000,
 		.virtual_corner = 28,
-		.open_loop_volt = 1111,
+		.open_loop_volt = 1113,
 	};
 
 	for (i = 0; i < OSM_TABLE_SIZE; i++) {
