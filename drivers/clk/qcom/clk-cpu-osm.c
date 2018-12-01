@@ -432,7 +432,6 @@ static struct clk_osm l3_clk = {
 static DEFINE_CLK_VOTER(l3_cluster0_vote_clk, l3_clk, 0);
 static DEFINE_CLK_VOTER(l3_cluster1_vote_clk, l3_clk, 0);
 static DEFINE_CLK_VOTER(l3_misc_vote_clk, l3_clk, 0);
-static DEFINE_CLK_VOTER(l3_gpu_vote_clk, l3_clk, 0);
 
 static struct clk_osm pwrcl_clk = {
 	.cluster_num = 1,
@@ -789,7 +788,7 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 			table[i].frequency = xo_kHz * lval;
 		table[i].driver_data = table[i].frequency;
 
-		pr_err("cpufreq i=%d src=%d div=%d lval=%d core_count=%d calc_freq=%ld", i, src, div, lval, core_count, table[i].frequency);
+		pr_err("cpufreq i=%ull src=%ull  div=%ull  lval=%ull  core_count=%ull  calc_freq=%ull ", i, src, div, lval, core_count, table[i].frequency);
 
 		
 		if (core_count != parent->max_core_count)
@@ -803,7 +802,6 @@ static int osm_cpufreq_cpu_init(struct cpufreq_policy *policy)
 		 */
 		if (i > 0 && table[i - 1].driver_data == table[i].driver_data
 					&& prev_cc == core_count) {
-			pr_err("end of table at i=%u", i);
 			struct cpufreq_frequency_table *prev = &table[i - 1];
 
 			if (prev->frequency == CPUFREQ_ENTRY_INVALID) {
