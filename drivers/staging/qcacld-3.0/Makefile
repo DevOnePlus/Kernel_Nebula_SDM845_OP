@@ -13,7 +13,7 @@ M ?= $(shell pwd)
 
 # WLAN_ROOT must contain an absolute path (i.e. not a relative path)
 KBUILD_OPTIONS := WLAN_ROOT=$(shell cd $(KERNEL_SRC); readlink -e $(M))
-KBUILD_OPTIONS += MODNAME?=wlan
+KBUILD_OPTIONS += MODNAME?=qca_cld3_wlan
 
 #By default build for CLD
 WLAN_SELECT := CONFIG_QCA_CLD_WLAN=m
