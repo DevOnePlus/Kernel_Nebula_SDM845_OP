@@ -118,3 +118,15 @@ all.config
 
 # fetched Android config fragments
 kernel/configs/android-*.cfg
+
+*.rej
+*.diff
+*.patch
+*.list
+out/*
+scripts/rkp_cfp/tmp/*
+
+build-anykernel.sh
+build-anykernel.cfg
+changelog.sh
+clang.sh
