@@ -577,7 +577,7 @@
 			reg = <1>;
 			qcom,gpu-freq = <710000000>;
 			qcom,bus-freq = <12>;
-			qcom,bus-min = <12>;
+			qcom,bus-min = <10>;
 			qcom,bus-max = <12>;
 		};
 
