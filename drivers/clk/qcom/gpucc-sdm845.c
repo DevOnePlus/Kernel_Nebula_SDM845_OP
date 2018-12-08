@@ -284,6 +284,7 @@ static const struct freq_tbl  ftbl_gpu_cc_gx_gfx3d_clk_src_sdm845_v2[] = {
 	F(710000000, P_CRC_DIV,  1, 0, 0),
 	F(760000000, P_CRC_DIV,  1, 0, 0),
 	F(833000000, P_CRC_DIV,  1, 0, 0),
+	F(855000000, P_CRC_DIV,  1, 0, 0),
 	{ }
 };
 
@@ -637,10 +638,10 @@ static void gpu_cc_gfx_sdm845_fixup_sdm845v2(void)
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_NOMINAL] =
 		520000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_NOMINAL_L1] =
-		675000000;
+		710000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH] = 760000000;
 	gpu_cc_gx_gfx3d_clk_src.clkr.hw.init->rate_max[VDD_GX_HIGH_L1] =
-		833000000;
+		855000000;
 }
 
 static void gpu_cc_gfx_sdm845_fixup_sdm670(void)
