@@ -369,7 +369,7 @@ CFLAGS_KERNEL	=
 AFLAGS_KERNEL	=
 LDFLAGS_vmlinux =
 
-OPT_FLAGS	:= -funsafe-math-optimizations -ffast-math \
+#OPT_FLAGS	:= -funsafe-math-optimizations -ffast-math \
 		   -fvectorize -fslp-vectorize -fopenmp
 
 # Use USERINCLUDE when you must reference the UAPI directories only.
